@@ -20,9 +20,11 @@ async def main():
     test = ReqeustTest()
     for i in range(1,11):
         result.append(asyncio.ensure_future(test.rTest(i)))
-    print(result)
+
     await asyncio.gather(*result)
-    print(result)
+
+    for r in result:
+        print(r.result())
 
 if __name__ == '__main__':
     asyncio.run(main())
