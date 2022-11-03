@@ -12,22 +12,40 @@
 #     test()
 #---------------------------------------------------------------------
 import asyncio
+import aiohttp
+from time import time
 
 from requestTest import ReqeustTest
 
 result = []
 async def main():
     test = ReqeustTest()
-    for i in range(1,11):
-        result.append(asyncio.ensure_future(test.rTest(i)))
-
-    await asyncio.gather(*result)
+    async with aiohttp.ClientSession() as session:
+        results = await asyncio.gather(*[test.asyncFun(session, i) for i in range(1, 11)])
 
     for r in result:
-        print(r.result())
+        print(r)
 
 if __name__ == '__main__':
+    begin = time()
     asyncio.run(main())
+    end = time()
+    print('실행 시간: {0:.3f}초'.format(end - begin))
+#---------------------------------------------------------------------
+# result = []
+# def main():
+#     test = ReqeustTest()
+#     for i in range(1,11):
+#         result.append(test.normalFun(i))
+#
+#     for r in result:
+#         print(r)
+#
+# if __name__ == '__main__':
+#     begin = time()
+#     main()
+#     end = time()
+#     print('실행 시간: {0:.3f}초'.format(end - begin))
 #---------------------------------------------------------------------
 # from time import time
 # from urllib.request import Request, urlopen

@@ -1,6 +1,12 @@
 import requests
 
 class ReqeustTest:
-    async def rTest(self, i):
+    async def asyncFun(self, session, i):
+        async with session.get('http://naver.com') as response:
+            res = await response.text()
+
+        return i, res
+
+    def normalFun(self, i):
         r = requests.get('http://naver.com')
-        return i, r
+        return r
